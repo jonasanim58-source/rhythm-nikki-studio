@@ -3,245 +3,489 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#11111a">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#101016">
 <title>Rhythm Nikki Studio</title>
+
 <style>
-:root{color-scheme:dark;--bg:#101018;--panel:#1b1b27;--line:#373749;--text:#f7f5ff;--muted:#aaa8bd;--purple:#b69cff;--pink:#f47ac0;--green:#62e6a1;--red:#ff7288}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,sans-serif}
-header{padding:22px 16px;background:linear-gradient(130deg,#28183a,#151522 70%,#32182c);border-bottom:1px solid var(--line)}
-.brand{font-size:11px;letter-spacing:3px;color:var(--pink);font-weight:850}
-h1{font-size:27px;margin:5px 0}
-h2{font-size:16px;margin:0 0 13px}
-p{line-height:1.5}
-.small{font-size:12px;color:var(--muted);line-height:1.5}
-main{max-width:900px;margin:auto;padding:14px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:15px;margin-bottom:14px}
-button{background:#292939;color:var(--text);border:1px solid #45455a;border-radius:11px;padding:12px;font:inherit;font-size:13px;font-weight:700;cursor:pointer}
-button:disabled{opacity:.45}
-button.primary{background:var(--purple);color:#171020;border-color:var(--purple)}
-button.record{background:#542233;border-color:#9b4260}
-button.active{outline:2px solid var(--pink)}
-button.danger{color:#ff9cad}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
-.status{padding:11px;background:#252534;border-radius:11px;font-size:13px;line-height:1.5;overflow-wrap:anywhere}
-.upload{display:block;text-align:center;border:1px dashed #76668e;background:#242032;padding:18px;border-radius:12px;cursor:pointer}
-.upload input{display:none}
-.clock{text-align:center;font-size:34px;font-weight:800;font-variant-numeric:tabular-nums;padding:7px}
-.bar{height:8px;border-radius:10px;background:#343447;overflow:hidden;margin:8px 0 15px}
-#progress{height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--pink))}
-.track{padding:12px;background:#15151f;border:1px solid var(--line);border-radius:12px;margin:9px 0}
-.tracktop{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.trackname{font-size:13px;font-weight:750;overflow-wrap:anywhere}
-.trackmeta{font-size:11px;color:var(--muted);margin-top:4px}
-.wave{display:flex;height:28px;align-items:center;gap:2px;overflow:hidden;margin:10px 0}
-.wave span{flex:1;min-width:2px;border-radius:2px;background:var(--pink)}
-.track.beat .wave span{background:#53c7fa}
-.controls{display:flex;align-items:center;gap:8px}
-.controls input{width:100%;min-width:0}
-input[type=range]{accent-color:var(--purple)}
-label.control{display:block;margin:12px 0 5px;font-size:13px}
-footer{text-align:center;color:var(--muted);font-size:11px;padding:12px 10px 30px}
-@media(min-width:620px){main{padding:22px}.grid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+:root {
+  --bg: #101016;
+  --panel: #1b1b25;
+  --panel2: #242432;
+  --text: #f5f5fa;
+  --muted: #aaaabd;
+  --pink: #ff3f91;
+  --purple: #9a6bff;
+  --border: #353546;
+  --green: #45e0a0;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Arial, sans-serif;
+}
+header {
+  padding: 18px 16px;
+  background: #171720;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.brand {
+  font-size: 21px;
+  font-weight: 800;
+}
+.brand span { color: var(--pink); }
+header p {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+main {
+  max-width: 1000px;
+  margin: auto;
+  padding: 16px;
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+h2 {
+  font-size: 16px;
+  margin: 0 0 12px;
+}
+p { line-height: 1.5; }
+.small {
+  color: var(--muted);
+  font-size: 12px;
+}
+button, .file-label {
+  border: 0;
+  border-radius: 9px;
+  padding: 12px 14px;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  color: white;
+  background: var(--panel2);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+}
+button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+.primary {
+  background: linear-gradient(120deg, var(--pink), #bb4fff);
+}
+.green { background: #137d5b; }
+.active {
+  outline: 2px solid var(--green);
+}
+.danger { background: #782f48; }
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+input[type="file"] {
+  display: none;
+}
+input[type="range"] {
+  width: 100%;
+  accent-color: var(--pink);
+}
+.transport {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+.time {
+  font-size: 21px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+#timeline {
+  width: 100%;
+  accent-color: var(--pink);
+  margin-top: 14px;
+}
+.track {
+  background: #22222e;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 13px;
+  margin-top: 10px;
+}
+.track-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.track-name {
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+.track-type {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 4px;
+}
+.track-controls {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.track-controls button {
+  min-height: 34px;
+  padding: 8px 10px;
+  font-size: 11px;
+}
+.volume-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 38px;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.wave {
+  width: 100%;
+  height: 45px;
+  display: block;
+  margin-top: 10px;
+  background: #171721;
+  border-radius: 6px;
+}
+#status {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--green);
+  font-size: 13px;
+}
+#status.error { color: #ff789a; }
+.notice {
+  background: #30251d;
+  color: #ffdda9;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+footer {
+  text-align: center;
+  padding: 22px;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width: 520px) {
+  main { padding: 10px; }
+  .panel { padding: 12px; }
+  button, .file-label { flex: 1 1 auto; }
+  .transport { grid-template-columns: 1fr; }
+}
 </style>
 </head>
+
 <body>
 <header>
-  <div class="brand">RHYTHM NIKKI</div>
-  <h1>Studio</h1>
-  <div class="small">Your music. Your tracks. No subscription.</div>
+  <div class="brand">RHYTHM <span>NIKKI</span> STUDIO</div>
+  <p>Your music. Your vocals. Your studio.</p>
 </header>
 
 <main>
   <section class="panel">
-    <h2>Studio status</h2>
-    <div class="status" id="status" role="status">Ready. Import a beat to begin.</div>
-    <p class="small">Tip: use headphones. Microphone monitoring starts OFF to help prevent feedback.</p>
-  </section>
+    <h2>1. Import your music</h2>
+    <div class="controls">
+      <label class="file-label primary" for="beatFile">
+        Import beat / audio
+      </label>
+      <input id="beatFile" type="file"
+        accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.opus,.webm">
 
-  <section class="panel">
-    <h2>1 · Import your beat</h2>
-    <label class="upload">
-      <strong>＋ Choose beat / audio file</strong>
-      <div class="small">Select an audio file stored on your phone</div>
-      <input id="beatFile" type="file" accept="audio/*">
-    </label>
-    <p id="beatInfo" class="small">No beat loaded.</p>
-  </section>
-
-  <section class="panel">
-    <h2>2 · Recording and playback</h2>
-    <div class="clock" id="clock">00:00.0</div>
-    <div class="bar"><div id="progress"></div></div>
-    <div class="grid">
-      <button id="playBtn" class="primary">▶ Play</button>
-      <button id="stopBtn">■ Stop</button>
-      <button id="micBtn">Enable microphone</button>
-      <button id="recordBtn" class="record">● Record vocals</button>
+      <button id="micBtn" class="green">Enable microphone</button>
     </div>
-    <p class="small">Tap Record vocals to start recording. Tap it again to finish the take. If playback is stopped, recording starts the session from the beginning.</p>
+    <p class="small">
+      Import an instrumental first. Then enable your microphone and record
+      vocals on a separate track.
+    </p>
   </section>
 
   <section class="panel">
-    <h2>3 · Microphone monitoring</h2>
-    <div class="grid">
+    <h2>2. Recording and playback</h2>
+
+    <div class="transport">
+      <div>
+        <div class="time" id="timeDisplay">00:00 / 00:00</div>
+        <p class="small">Project timeline</p>
+      </div>
+      <div class="controls">
+        <button id="playBtn" class="primary">▶ Play</button>
+        <button id="stopBtn">■ Stop</button>
+      </div>
+    </div>
+
+    <input id="timeline" type="range" min="0" max="0"
+      step="0.01" value="0">
+
+    <div class="controls" style="margin-top:14px">
+      <button id="recordBtn" class="danger" disabled>
+        ● Start recording
+      </button>
       <button id="monitorBtn">Monitoring OFF</button>
-      <button id="saveBtn">Save project</button>
-      <button id="loadBtn">Load saved project</button>
-      <button id="exportBtn">Export WAV mix</button>
     </div>
-    <p class="small">Monitoring OFF means your microphone is not intentionally sent to the speakers. Recording continues independently. Headphones help prevent sound leaking back into the microphone.</p>
+
+    <p class="small">
+      Recording captures your microphone on a separate track.
+      Monitoring is OFF by default to avoid sending your live microphone
+      back through the speakers.
+    </p>
+
+    <div class="notice">
+      <strong>Important:</strong> Wear headphones when recording over a beat.
+      If the beat plays through your phone speaker, the microphone may record
+      that sound too. Keep monitoring OFF unless you need it.
+    </div>
   </section>
 
   <section class="panel">
-    <h2>4 · Tracks</h2>
-    <div id="tracks"><p class="small">Your imported beat and vocal takes will appear here.</p></div>
+    <h2>3. Your tracks</h2>
+    <div id="tracks">
+      <p class="small">No tracks yet. Import a beat to begin.</p>
+    </div>
   </section>
 
   <section class="panel">
-    <h2>5 · Master volume</h2>
-    <label class="control" for="masterVolume">Output volume</label>
-    <input id="masterVolume" type="range" min="0" max="100" value="85">
-    <div id="volumeText" class="small">85%</div>
-    <p class="small">This first stage establishes the recording engine, separate tracks, project saving, and WAV export. Vocal effects and beat-making tools come next.</p>
+    <h2>4. Project tools</h2>
+    <div class="controls">
+      <button id="saveBtn" class="green">Save project</button>
+      <button id="loadBtn">Load saved project</button>
+      <button id="exportBtn" class="primary">Export WAV</button>
+    </div>
+    <p class="small">
+      Save stores your project in this browser on this device.
+      Export WAV creates an audio file containing your combined tracks.
+      Keep exported files somewhere safe.
+    </p>
+  </section>
+
+  <section class="panel">
+    <h2>Status</h2>
+    <div id="status">Studio ready. Import a beat to begin.</div>
   </section>
 </main>
-<footer>Rhythm Nikki Studio · Stage 1 · Free core tools</footer>
+
+<footer>Rhythm Nikki Studio · Stage 1</footer>
 
 <script>
 "use strict";
 
+/* -------------------------------------------------------
+   RHYTHM NIKKI STUDIO
+   Single-file browser recording studio.
+   Microphone monitoring is OFF by default.
+------------------------------------------------------- */
+
 const $ = id => document.getElementById(id);
 
 let ctx = null;
+let masterGain = null;
+
 let micStream = null;
 let micSource = null;
 let micProcessor = null;
 let silentGain = null;
 let monitorGain = null;
-let masterGain = null;
 
 let tracks = [];
-let activeSources = [];
+let nextTrackId = 1;
+
 let playing = false;
 let recording = false;
 let monitoring = false;
+
 let playOffset = 0;
 let playStartedAt = 0;
-let animation = 0;
-let chunks = [];
-let takeCount = 0;
-let projectDB = null;
+let activeSources = [];
+let animationFrame = 0;
 
-function status(message, error=false) {
+let recordedChunks = [];
+let recordingOffset = 0;
+
+function status(message, error = false) {
   $("status").textContent = message;
-  $("status").style.borderLeft = error ? "3px solid var(--red)" : "3px solid var(--green)";
+  $("status").classList.toggle("error", error);
 }
 
-function timeText(n) {
-  n = Math.max(0, Number(n) || 0);
-  return String(Math.floor(n/60)).padStart(2,"0") + ":" +
-    (n%60).toFixed(1).padStart(4,"0");
-}
-
-function duration() {
-  return tracks.reduce((max,t)=>Math.max(max,t.start+t.buffer.duration),0);
-}
-
-function position() {
-  return playing && ctx ? playOffset + ctx.currentTime-playStartedAt : playOffset;
+function secondsText(seconds) {
+  seconds = Math.max(0, Math.floor(seconds || 0));
+  const minutes = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return String(minutes).padStart(2, "0") + ":" +
+         String(secs).padStart(2, "0");
 }
 
 async function audio() {
   if (!ctx) {
-    const AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) throw new Error("Web Audio is not supported. Please use Chrome.");
-    ctx = new AC();
+    const AudioContextClass =
+      window.AudioContext || window.webkitAudioContext;
+
+    if (!AudioContextClass) {
+      throw new Error("This browser does not support Web Audio.");
+    }
+
+    ctx = new AudioContextClass();
+
     masterGain = ctx.createGain();
-    masterGain.gain.value = Number($("masterVolume").value)/100;
+    masterGain.gain.value = 0.85;
     masterGain.connect(ctx.destination);
   }
-  if (ctx.state === "suspended") await ctx.resume();
+
+  if (ctx.state === "suspended") {
+    await ctx.resume();
+  }
+
   return ctx;
 }
 
-function updateTransport() {
-  const p = position();
-  const d = duration();
-  $("clock").textContent = timeText(p);
-  $("progress").style.width = d ? Math.min(100,p/d*100)+"%" : "0%";
+function trackDuration(track) {
+  return track.offset + track.data.length / track.sampleRate;
+}
 
-  if (playing && d > 0 && p >= d) {
-    stopSources();
-    playing = false;
+function projectDuration() {
+  if (!tracks.length) return 0;
+  return Math.max(...tracks.map(trackDuration));
+}
+
+function position() {
+  if (!playing || !ctx) return playOffset;
+
+  return Math.min(
+    projectDuration(),
+    playOffset + (ctx.currentTime - playStartedAt)
+  );
+}
+
+function updateTransport() {
+  const duration = projectDuration();
+  const current = position();
+
+  $("timeDisplay").textContent =
+    secondsText(current) + " / " + secondsText(duration);
+
+  $("timeline").max = String(duration);
+  $("timeline").value = String(Math.min(current, duration));
+
+  $("playBtn").textContent = playing ? "Ⅱ Pause" : "▶ Play";
+
+  if (playing && current >= duration) {
+    pausePlayback();
     playOffset = 0;
-    $("playBtn").textContent = "▶ Play";
-    $("clock").textContent = timeText(0);
-    $("progress").style.width = "0%";
+    $("timeline").value = "0";
+    updateTransport();
     return;
   }
-  if (playing) animation = requestAnimationFrame(updateTransport);
+
+  if (playing) {
+    animationFrame = requestAnimationFrame(updateTransport);
+  }
 }
 
 function stopSources() {
-  for (const item of activeSources) {
-    try { item.source.stop(); } catch (_) {}
-    try { item.source.disconnect(); } catch (_) {}
-    try { item.gain.disconnect(); } catch (_) {}
+  for (const source of activeSources) {
+    try { source.stop(); } catch (_) {}
+    try { source.disconnect(); } catch (_) {}
   }
+
   activeSources = [];
-  cancelAnimationFrame(animation);
+
+  if (animationFrame) {
+    cancelAnimationFrame(animationFrame);
+    animationFrame = 0;
+  }
 }
 
-function startPlayback() {
-  if (!ctx || !tracks.length) {
-    status("Import a beat or record a take first.",true);
-    return;
+async function startPlayback() {
+  try {
+    await audio();
+
+    if (playing) return;
+
+    const duration = projectDuration();
+
+    if (!duration) {
+      status("Import a beat or record a track first.", true);
+      return;
+    }
+
+    if (playOffset >= duration) playOffset = 0;
+
+    stopSources();
+
+    const now = ctx.currentTime;
+    playing = true;
+    playStartedAt = now;
+
+    for (const track of tracks) {
+      if (track.muted || track.volume <= 0) continue;
+
+      const end = trackDuration(track);
+      if (end <= playOffset) continue;
+
+      const buffer = ctx.createBuffer(
+        1,
+        track.data.length,
+        track.sampleRate
+      );
+
+      buffer.copyToChannel(track.data, 0);
+
+      const source = ctx.createBufferSource();
+      source.buffer = buffer;
+
+      const gain = ctx.createGain();
+      gain.gain.value = track.volume;
+
+      source.connect(gain);
+      gain.connect(masterGain);
+
+      const when = now + Math.max(0, track.offset - playOffset);
+      const skip = Math.max(0, playOffset - track.offset);
+      const remaining = track.data.length / track.sampleRate - skip;
+
+      if (remaining > 0) {
+        source.start(when, skip, remaining);
+        activeSources.push(source);
+      }
+    }
+
+    status("Playback started.");
+    updateTransport();
+  } catch (error) {
+    status("Playback error: " + error.message, true);
   }
-  if (playing) return;
-
-  const end = duration();
-  if (!end) {
-    status("There is no audio to play.",true);
-    return;
-  }
-  if (playOffset >= end) playOffset = 0;
-
-  const base = ctx.currentTime + 0.06;
-  playStartedAt = base;
-  playing = true;
-
-  for (const t of tracks) {
-    if (t.muted) continue;
-    const endOfTrack = t.start + t.buffer.duration;
-    if (endOfTrack <= playOffset) continue;
-
-    const source = ctx.createBufferSource();
-    source.buffer = t.buffer;
-    const gain = ctx.createGain();
-    gain.gain.value = t.volume;
-    source.connect(gain);
-    gain.connect(masterGain);
-
-    const offsetIntoTrack = Math.max(0,playOffset-t.start);
-    const delay = Math.max(0,t.start-playOffset);
-    source.start(base+delay,offsetIntoTrack);
-    activeSources.push({source,gain,track:t});
-  }
-
-  $("playBtn").textContent = "Ⅱ Pause";
-  status("Playing session.");
-  cancelAnimationFrame(animation);
-  animation = requestAnimationFrame(updateTransport);
 }
 
 function pausePlayback() {
-  if (!playing) return;
-  playOffset = Math.min(position(),duration());
+  if (playing && ctx) {
+    playOffset = position();
+  }
+
   playing = false;
   stopSources();
-  $("playBtn").textContent = "▶ Play";
   updateTransport();
 }
 
@@ -249,473 +493,608 @@ function stopPlayback() {
   playing = false;
   playOffset = 0;
   stopSources();
-  $("playBtn").textContent = "▶ Play";
   updateTransport();
 }
 
-function refreshActiveTrack(track) {
-  for (const item of activeSources) {
-    if (item.track === track && ctx) {
-      item.gain.gain.setTargetAtTime(
-        track.muted ? 0 : track.volume,ctx.currentTime,0.015
-      );
-    }
-  }
-}
+function drawWave(canvas, data) {
+  const width = Math.max(300, canvas.clientWidth * 2);
+  const height = 90;
 
-function waveHTML(buffer) {
-  const data = buffer.getChannelData(0);
-  let html = "";
-  const count = 70;
-  const step = Math.max(1,Math.floor(data.length/count));
-  for (let i=0;i<count;i++) {
-    let peak=0;
-    for (let j=i*step;j<Math.min(data.length,(i+1)*step);j++) {
-      peak=Math.max(peak,Math.abs(data[j]));
+  canvas.width = width;
+  canvas.height = height;
+
+  const c = canvas.getContext("2d");
+  c.clearRect(0, 0, width, height);
+  c.strokeStyle = "#ff3f91";
+  c.lineWidth = 2;
+  c.beginPath();
+
+  const middle = height / 2;
+  const step = Math.max(1, Math.floor(data.length / width));
+
+  for (let x = 0; x < width; x++) {
+    const index = x * step;
+    let peak = 0;
+
+    for (let j = 0; j < step && index + j < data.length; j++) {
+      peak = Math.max(peak, Math.abs(data[index + j]));
     }
-    html += '<span style="height:'+Math.max(3,Math.round(peak*27))+'px"></span>';
+
+    const y = peak * middle * 0.9;
+
+    c.moveTo(x, middle - y);
+    c.lineTo(x, middle + y);
   }
-  return html;
+
+  c.stroke();
 }
 
 function renderTracks() {
-  const box = $("tracks");
-  box.replaceChildren();
+  const container = $("tracks");
+  container.replaceChildren();
 
   if (!tracks.length) {
-    const p=document.createElement("p");
-    p.className="small";
-    p.textContent="Your imported beat and vocal takes will appear here.";
-    box.append(p);
+    const empty = document.createElement("p");
+    empty.className = "small";
+    empty.textContent = "No tracks yet. Import a beat to begin.";
+    container.appendChild(empty);
+    updateTransport();
     return;
   }
 
-  tracks.forEach(t=>{
-    const card=document.createElement("div");
-    card.className="track "+t.kind;
+  tracks.forEach(track => {
+    const card = document.createElement("div");
+    card.className = "track";
 
-    const top=document.createElement("div");
-    top.className="tracktop";
-    const left=document.createElement("div");
+    const top = document.createElement("div");
+    top.className = "track-top";
 
-    const name=document.createElement("div");
-    name.className="trackname";
-    name.textContent=t.name;
+    const nameBox = document.createElement("div");
 
-    const meta=document.createElement("div");
-    meta.className="trackmeta";
-    meta.textContent=(t.kind==="beat"?"BEAT":"VOCAL")+" · "+timeText(t.buffer.duration)+" · Start "+timeText(t.start);
+    const name = document.createElement("div");
+    name.className = "track-name";
+    name.textContent = track.name;
 
-    left.append(name,meta);
-    const mute=document.createElement("button");
-    mute.textContent=t.muted?"Unmute":"Mute";
-    mute.onclick=()=>{
-      t.muted=!t.muted;
-      refreshActiveTrack(t);
+    const type = document.createElement("div");
+    type.className = "track-type";
+    type.textContent =
+      track.kind.toUpperCase() + " · " +
+      secondsText(track.data.length / track.sampleRate) +
+      " · starts at " + secondsText(track.offset);
+
+    nameBox.append(name, type);
+
+    const controls = document.createElement("div");
+    controls.className = "track-controls";
+
+    const mute = document.createElement("button");
+    mute.textContent = track.muted ? "Unmute" : "Mute";
+    mute.className = track.muted ? "active" : "";
+    mute.addEventListener("click", () => {
+      track.muted = !track.muted;
       renderTracks();
-    };
-    top.append(left,mute);
-
-    const wave=document.createElement("div");
-    wave.className="wave";
-    wave.innerHTML=waveHTML(t.buffer);
-
-    const controls=document.createElement("div");
-    controls.className="controls";
-
-    const volLabel=document.createElement("span");
-    volLabel.className="small";
-    volLabel.textContent="Vol";
-
-    const vol=document.createElement("input");
-    vol.type="range";vol.min="0";vol.max="150";
-    vol.value=String(Math.round(t.volume*100));
-    vol.setAttribute("aria-label",t.name+" volume");
-    vol.oninput=()=>{
-      t.volume=Number(vol.value)/100;
-      refreshActiveTrack(t);
-    };
-
-    const del=document.createElement("button");
-    del.className="danger";del.textContent="Delete";
-    del.onclick=()=>{
-      if(recording){status("Finish recording before deleting tracks.",true);return;}
-      stopPlayback();
-      tracks=tracks.filter(x=>x!==t);
-      renderTracks();
-      status("Track deleted.");
-    };
-
-    controls.append(volLabel,vol,del);
-    card.append(top,wave,controls);
-    box.append(card);
-  });
-}
-
-async function importBeat(file) {
-  try {
-    await audio();
-    status("Loading beat…");
-    const decoded=await ctx.decodeAudioData(await file.arrayBuffer());
-    stopPlayback();
-
-    tracks=tracks.filter(t=>t.kind!=="beat");
-    tracks.unshift({
-      name:file.name,kind:"beat",buffer:decoded,
-      start:0,volume:1,muted:false
+      if (playing) {
+        const current = position();
+        pausePlayback();
+        playOffset = current;
+        startPlayback();
+      }
     });
 
-    $("beatInfo").textContent=file.name+" · "+timeText(decoded.duration);
+    const remove = document.createElement("button");
+    remove.textContent = "Delete";
+    remove.className = "danger";
+    remove.addEventListener("click", () => {
+      if (recording) {
+        status("Stop recording before deleting tracks.", true);
+        return;
+      }
+
+      tracks = tracks.filter(t => t.id !== track.id);
+      playOffset = Math.min(playOffset, projectDuration());
+      renderTracks();
+      status("Track deleted.");
+    });
+
+    controls.append(mute, remove);
+    top.append(nameBox, controls);
+
+    const canvas = document.createElement("canvas");
+    canvas.className = "wave";
+    canvas.setAttribute("aria-label", "Audio waveform");
+
+    const volumeRow = document.createElement("div");
+    volumeRow.className = "volume-row";
+
+    const volumeLabel = document.createElement("label");
+    volumeLabel.textContent = "Volume";
+
+    const slider = document.createElement("input");
+    slider.type = "range";
+    slider.min = "0";
+    slider.max = "1";
+    slider.step = "0.01";
+    slider.value = String(track.volume);
+
+    const percent = document.createElement("span");
+    percent.textContent = Math.round(track.volume * 100) + "%";
+
+    slider.addEventListener("input", () => {
+      track.volume = Number(slider.value);
+      percent.textContent = Math.round(track.volume * 100) + "%";
+    });
+
+    volumeRow.append(volumeLabel, slider, percent);
+    card.append(top, canvas, volumeRow);
+    container.appendChild(card);
+
+    drawWave(canvas, track.data);
+  });
+
+  updateTransport();
+}
+
+async function importAudio(file) {
+  try {
+    await audio();
+
+    if (!file) return;
+
+    if (file.size > 200 * 1024 * 1024) {
+      status("This file is over 200 MB. Try a smaller audio file.", true);
+      return;
+    }
+
+    status("Loading audio: " + file.name);
+
+    const bytes = await file.arrayBuffer();
+    const decoded = await ctx.decodeAudioData(bytes);
+
+    const data = new Float32Array(decoded.length);
+    decoded.copyFromChannel(data, 0);
+
+    tracks = tracks.filter(track => track.kind !== "beat");
+
+    tracks.unshift({
+      id: nextTrackId++,
+      name: file.name,
+      kind: "beat",
+      data,
+      sampleRate: decoded.sampleRate,
+      offset: 0,
+      volume: 1,
+      muted: false
+    });
+
+    stopPlayback();
     renderTracks();
-    status("Beat loaded. Enable your microphone to record vocals.");
-  } catch(e) {
-    console.error(e);
-    status("Could not load this file. Try an MP3 or WAV file.",true);
+    status("Audio imported successfully.");
+  } catch (error) {
+    console.error(error);
+    status(
+      "Could not import this audio. Try a WAV or MP3 file. " +
+      (error.message || ""),
+      true
+    );
   }
 }
 
 async function enableMic() {
   try {
-    if (!navigator.mediaDevices?.getUserMedia) {
-      throw new Error("Open the GitHub Pages website over HTTPS in Chrome.");
+    if (!navigator.mediaDevices ||
+        !navigator.mediaDevices.getUserMedia) {
+      throw new Error(
+        "Microphone access needs HTTPS. Open your GitHub Pages website."
+      );
     }
+
     await audio();
+
     if (micStream) {
       status("Microphone is already enabled.");
       return;
     }
 
-    micStream=await navigator.mediaDevices.getUserMedia({
-      audio:{
-        echoCancellation:false,
-        noiseSuppression:false,
-        autoGainControl:false,
-        channelCount:1
+    micStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: false,
+        channelCount: 1
       },
-      video:false
+      video: false
     });
 
-    micSource=ctx.createMediaStreamSource(micStream);
+    micSource = ctx.createMediaStreamSource(micStream);
 
-    // Recording route: microphone -> processor -> silent output.
-    // The microphone is NOT connected to the audible master output.
-    micProcessor=ctx.createScriptProcessor(4096,1,1);
-    silentGain=ctx.createGain();
-    silentGain.gain.value=0;
+    micProcessor = ctx.createScriptProcessor(4096, 1, 1);
+    silentGain = ctx.createGain();
 
-    micProcessor.onaudioprocess=event=>{
-      if(!recording) return;
-      chunks.push(new Float32Array(event.inputBuffer.getChannelData(0)));
+    // Explicitly mute the processor's output.
+    // This is essential: captured microphone audio must not
+    // travel to the speakers through this processing path.
+    silentGain.gain.value = 0;
+
+    micProcessor.onaudioprocess = event => {
+      const output = event.outputBuffer.getChannelData(0);
+      output.fill(0);
+
+      if (!recording) return;
+
+      const input = event.inputBuffer.getChannelData(0);
+      recordedChunks.push(new Float32Array(input));
     };
 
+    // Recording path: microphone -> processor -> zero-gain output.
     micSource.connect(micProcessor);
     micProcessor.connect(silentGain);
     silentGain.connect(ctx.destination);
 
-    // The monitoring route is connected only when the user enables it.
-    monitorGain=ctx.createGain();
-    monitorGain.gain.value=0;
+    // Monitoring is a separate path and stays OFF initially.
+    monitorGain = ctx.createGain();
+    monitorGain.gain.value = 0;
 
-    $("micBtn").textContent="Microphone enabled";
-    $("micBtn").disabled=true;
+    monitoring = false;
+    $("monitorBtn").textContent = "Monitoring OFF";
+    $("monitorBtn").classList.remove("active");
+    $("micBtn").textContent = "Microphone enabled";
+    $("micBtn").disabled = true;
+    $("recordBtn").disabled = false;
+
     status("Microphone ready. Monitoring is OFF.");
-  } catch(e) {
-    console.error(e);
-    status("Microphone error: "+(e.message||e),true);
+  } catch (error) {
+    console.error(error);
+    status("Microphone error: " + (error.message || error), true);
   }
 }
 
 function setMonitoring(on) {
-  if(!micSource||!monitorGain||!ctx) {
-    status("Enable the microphone first.",true);
+  if (!micSource || !monitorGain || !ctx) {
+    status("Enable the microphone first.", true);
     return;
   }
 
-  try { micSource.disconnect(monitorGain); } catch(_) {}
-  try { monitorGain.disconnect(); } catch(_) {}
+  try {
+    // Remove the old monitor route before changing its state.
+    try { micSource.disconnect(monitorGain); } catch (_) {}
+    try { monitorGain.disconnect(); } catch (_) {}
 
-  monitoring=Boolean(on);
-  if(monitoring) {
-    // Lower monitoring level to reduce the risk of feedback.
-    monitorGain.gain.setValueAtTime(0.25,ctx.currentTime);
-    micSource.connect(monitorGain);
-    monitorGain.connect(ctx.destination);
-  } else {
-    monitorGain.gain.setValueAtTime(0,ctx.currentTime);
+    monitoring = Boolean(on);
+
+    if (monitoring) {
+      monitorGain.gain.setValueAtTime(0.2, ctx.currentTime);
+      micSource.connect(monitorGain);
+      monitorGain.connect(masterGain);
+    } else {
+      monitorGain.gain.setValueAtTime(0, ctx.currentTime);
+    }
+
+    $("monitorBtn").textContent =
+      monitoring ? "Monitoring ON" : "Monitoring OFF";
+
+    $("monitorBtn").classList.toggle("active", monitoring);
+
+    status(
+      monitoring
+        ? "Monitoring ON. Use headphones to prevent feedback."
+        : "Monitoring OFF. Recording is still enabled."
+    );
+  } catch (error) {
+    status("Monitoring error: " + error.message, true);
   }
-
-  $("monitorBtn").textContent=monitoring?"Monitoring ON":"Monitoring OFF";
-  $("monitorBtn").classList.toggle("active",monitoring);
-  status(monitoring
-    ?"Monitoring is ON. Headphones are strongly recommended."
-    :"Monitoring is OFF. The microphone can still record.");
 }
 
 async function startRecording() {
   try {
-    await audio();
-    if(!micStream) {
-      await enableMic();
-      if(!micStream) return;
-    }
-    if(!tracks.some(t=>t.kind==="beat")) {
-      status("Import a beat before recording vocals.",true);
+    if (!micStream) {
+      status("Enable the microphone first.", true);
       return;
     }
 
-    chunks=[];
-    const startPosition=playing?position():0;
-    if(!playing) playOffset=0;
+    if (recording) return;
 
-    // Save the take's timeline position before playback is started.
-    const takeStart=startPosition;
-    recording=true;
+    await audio();
 
-    if(!playing) startPlayback();
+    // Start playback from the current timeline position if tracks exist.
+    if (tracks.length && !playing) {
+      await startPlayback();
+    }
 
-    $("recordBtn").textContent="■ Finish take";
+    recordingOffset = position();
+    recordedChunks = [];
+    recording = true;
+
+    $("recordBtn").textContent = "■ Stop recording";
     $("recordBtn").classList.add("active");
-    $("recordBtn").dataset.start=String(takeStart);
-    status("Recording vocals… Monitoring "+(monitoring?"ON":"OFF")+".");
-  } catch(e) {
-    recording=false;
-    console.error(e);
-    status("Could not start recording: "+(e.message||e),true);
+
+    status("Recording vocal... Tap Stop recording when finished.");
+  } catch (error) {
+    status("Recording error: " + error.message, true);
   }
 }
 
-function finishRecording() {
-  if(!recording) return;
-  recording=false;
-  $("recordBtn").textContent="● Record vocals";
-  $("recordBtn").classList.remove("active");
+function stopRecording() {
+  if (!recording) return;
 
-  try {
-    const count=chunks.reduce((sum,c)=>sum+c.length,0);
-    if(!count) {
-      status("No voice audio was captured. Check the microphone and try again.",true);
-      return;
+  recording = false;
+
+  const totalLength = recordedChunks.reduce(
+    (sum, chunk) => sum + chunk.length, 0
+  );
+
+  if (totalLength > 0) {
+    const combined = new Float32Array(totalLength);
+    let offset = 0;
+
+    for (const chunk of recordedChunks) {
+      combined.set(chunk, offset);
+      offset += chunk.length;
     }
-
-    const samples=new Float32Array(count);
-    let offset=0;
-    for(const c of chunks){samples.set(c,offset);offset+=c.length;}
-
-    const buffer=ctx.createBuffer(1,samples.length,ctx.sampleRate);
-    buffer.copyToChannel(samples,0);
-    takeCount++;
 
     tracks.push({
-      name:"Vocal Take "+takeCount,
-      kind:"vocal",
-      buffer,
-      start:Number($("recordBtn").dataset.start||0),
-      volume:1,
-      muted:false
+      id: nextTrackId++,
+      name: "Vocal Take " +
+        (tracks.filter(t => t.kind === "vocal").length + 1),
+      kind: "vocal",
+      data: combined,
+      sampleRate: ctx.sampleRate,
+      offset: recordingOffset,
+      volume: 1,
+      muted: false
     });
 
-    chunks=[];
     renderTracks();
-    status("Vocal take saved. Record another take or export your mix.");
-  } catch(e) {
-    console.error(e);
-    status("Could not save the take: "+(e.message||e),true);
+    status("Vocal recorded and added as a separate track.");
+  } else {
+    status("No audio was captured. Check microphone permission.", true);
   }
+
+  recordedChunks = [];
+  $("recordBtn").textContent = "● Start recording";
+  $("recordBtn").classList.remove("active");
 }
 
-function wavBuffer(buffer) {
-  const channels=buffer.numberOfChannels;
-  const frames=buffer.length;
-  const bytes=2;
-  const size=frames*channels*bytes;
-  const out=new ArrayBuffer(44+size);
-  const v=new DataView(out);
-  const str=(p,s)=>{for(let i=0;i<s.length;i++)v.setUint8(p+i,s.charCodeAt(i));};
+function floatToWav(samples, sampleRate) {
+  const channels = 2;
+  const bytesPerSample = 2;
+  const outputLength = samples.length * channels;
+  const buffer = new ArrayBuffer(44 + outputLength * bytesPerSample);
+  const view = new DataView(buffer);
 
-  str(0,"RIFF");v.setUint32(4,36+size,true);str(8,"WAVE");
-  str(12,"fmt ");v.setUint32(16,16,true);
-  v.setUint16(20,1,true);v.setUint16(22,channels,true);
-  v.setUint32(24,buffer.sampleRate,true);
-  v.setUint32(28,buffer.sampleRate*channels*bytes,true);
-  v.setUint16(32,channels*bytes,true);v.setUint16(34,16,true);
-  str(36,"data");v.setUint32(40,size,true);
-
-  let p=44;
-  for(let i=0;i<frames;i++){
-    for(let c=0;c<channels;c++){
-      let s=buffer.getChannelData(c)[i];
-      s=Math.max(-1,Math.min(1,s));
-      v.setInt16(p,s<0?s*32768:s*32767,true);p+=2;
+  function writeString(position, value) {
+    for (let i = 0; i < value.length; i++) {
+      view.setUint8(position + i, value.charCodeAt(i));
     }
   }
-  return out;
+
+  writeString(0, "RIFF");
+  view.setUint32(4, 36 + outputLength * bytesPerSample, true);
+  writeString(8, "WAVE");
+  writeString(12, "fmt ");
+  view.setUint32(16, 16, true);
+  view.setUint16(20, 1, true);
+  view.setUint16(22, channels, true);
+  view.setUint32(24, sampleRate, true);
+  view.setUint32(28, sampleRate * channels * bytesPerSample, true);
+  view.setUint16(32, channels * bytesPerSample, true);
+  view.setUint16(34, 16, true);
+  writeString(36, "data");
+  view.setUint32(40, outputLength * bytesPerSample, true);
+
+  let p = 44;
+
+  for (let i = 0; i < samples.length; i++) {
+    let sample = Math.max(-1, Math.min(1, samples[i]));
+    const value = sample < 0 ? sample * 32768 : sample * 32767;
+
+    view.setInt16(p, value, true);
+    p += 2;
+    view.setInt16(p, value, true);
+    p += 2;
+  }
+
+  return new Blob([buffer], { type: "audio/wav" });
 }
 
-async function exportMix() {
-  if(!tracks.length){status("Nothing to export yet.",true);return;}
-  $("exportBtn").disabled=true;
+function exportWav() {
+  if (!tracks.length) {
+    status("There are no tracks to export.", true);
+    return;
+  }
 
   try {
-    await audio();
-    status("Mixing audio for WAV export…");
+    if (recording) stopRecording();
 
-    const sampleRate=ctx.sampleRate;
-    const frames=Math.ceil(duration()*sampleRate);
-    const Offline=window.OfflineAudioContext||window.webkitOfflineAudioContext;
-    if(!Offline) throw new Error("WAV export is not supported in this browser.");
+    const sampleRate = ctx ? ctx.sampleRate : tracks[0].sampleRate;
+    const duration = projectDuration();
+    const length = Math.ceil(duration * sampleRate);
+    const mix = new Float32Array(length);
 
-    const off=new Offline(2,frames,sampleRate);
-    const master=off.createGain();
-    master.gain.value=Number($("masterVolume").value)/100;
-    master.connect(off.destination);
+    for (const track of tracks) {
+      if (track.muted || track.volume <= 0) continue;
 
-    for(const t of tracks){
-      if(t.muted) continue;
-      const source=off.createBufferSource();
-      source.buffer=t.buffer;
-      const gain=off.createGain();
-      gain.gain.value=t.volume;
-      source.connect(gain);
-      gain.connect(master);
-      source.start(t.start);
+      const start = Math.round(track.offset * sampleRate);
+      const ratio = track.sampleRate / sampleRate;
+
+      for (let i = 0; i < track.data.length; i++) {
+        const destination = start + Math.round(i / ratio);
+        if (destination >= 0 && destination < mix.length) {
+          mix[destination] += track.data[i] * track.volume;
+        }
+      }
     }
 
-    const rendered=await off.startRendering();
-    const blob=new Blob([wavBuffer(rendered)],{type:"audio/wav"});
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement("a");
-    a.href=url;a.download="Rhythm-Nikki-Mix.wav";
-    document.body.append(a);a.click();a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),30000);
-    status("WAV exported. Check your phone's Downloads folder.");
-  } catch(e) {
-    console.error(e);
-    status("Export failed: "+(e.message||e),true);
-  } finally {
-    $("exportBtn").disabled=false;
+    // Prevent clipping while keeping quieter projects unchanged.
+    let peak = 0;
+    for (const sample of mix) {
+      peak = Math.max(peak, Math.abs(sample));
+    }
+
+    if (peak > 1) {
+      const scale = 0.98 / peak;
+      for (let i = 0; i < mix.length; i++) mix[i] *= scale;
+    }
+
+    const blob = floatToWav(mix, sampleRate);
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = "rhythm-nikki-mix.wav";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+
+    setTimeout(() => URL.revokeObjectURL(url), 30000);
+    status("WAV export created.");
+  } catch (error) {
+    console.error(error);
+    status("Export failed: " + error.message, true);
   }
 }
 
-// IndexedDB stores track audio locally in the browser.
-function openProjectDB() {
-  return new Promise((resolve,reject)=>{
-    const request=indexedDB.open("RhythmNikkiStudio",1);
-    request.onupgradeneeded=()=>{
-      if(!request.result.objectStoreNames.contains("projects")) {
-        request.result.createObjectStore("projects");
+/* IndexedDB project storage */
+
+function openDatabase() {
+  return new Promise((resolve, reject) => {
+    const request = indexedDB.open("RhythmNikkiStudioDB", 1);
+
+    request.onupgradeneeded = () => {
+      const db = request.result;
+      if (!db.objectStoreNames.contains("projects")) {
+        db.createObjectStore("projects", { keyPath: "id" });
       }
     };
-    request.onsuccess=()=>{projectDB=request.result;resolve(projectDB);};
-    request.onerror=()=>reject(request.error);
+
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error);
   });
 }
 
 async function saveProject() {
-  if(!tracks.length){status("Import a beat or record a take before saving.",true);return;}
   try {
-    const db=projectDB||await openProjectDB();
-    const data=[];
-    for(const t of tracks) {
-      data.push({
-        name:t.name,kind:t.kind,start:t.start,volume:t.volume,muted:t.muted,
-        sampleRate:t.buffer.sampleRate,
-        channels:Array.from({length:t.buffer.numberOfChannels},(_,i)=>
-          new Float32Array(t.buffer.getChannelData(i)))
-      });
-    }
+    if (recording) stopRecording();
 
-    await new Promise((resolve,reject)=>{
-      const tx=db.transaction("projects","readwrite");
-      tx.objectStore("projects").put(data,"latest");
-      tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+    const db = await openDatabase();
+
+    const project = {
+      id: "current",
+      savedAt: new Date().toISOString(),
+      tracks: tracks.map(track => ({
+        id: track.id,
+        name: track.name,
+        kind: track.kind,
+        data: track.data,
+        sampleRate: track.sampleRate,
+        offset: track.offset,
+        volume: track.volume,
+        muted: track.muted
+      }))
+    };
+
+    await new Promise((resolve, reject) => {
+      const transaction = db.transaction("projects", "readwrite");
+      transaction.objectStore("projects").put(project);
+      transaction.oncomplete = resolve;
+      transaction.onerror = () => reject(transaction.error);
+      transaction.onabort = () => reject(transaction.error);
     });
-    status("Project saved in this browser on this device.");
-  } catch(e) {
-    console.error(e);
-    status("Save failed. Your browser may be low on storage.",true);
+
+    db.close();
+    status("Project saved in this browser.");
+  } catch (error) {
+    console.error(error);
+    status(
+      "Could not save. Browser storage may be full. " + error.message,
+      true
+    );
   }
 }
 
 async function loadProject() {
   try {
-    const db=projectDB||await openProjectDB();
-    const data=await new Promise((resolve,reject)=>{
-      const tx=db.transaction("projects","readonly");
-      const req=tx.objectStore("projects").get("latest");
-      req.onsuccess=()=>resolve(req.result);
-      req.onerror=()=>reject(req.error);
+    const db = await openDatabase();
+
+    const project = await new Promise((resolve, reject) => {
+      const transaction = db.transaction("projects", "readonly");
+      const request = transaction.objectStore("projects").get("current");
+      request.onsuccess = () => resolve(request.result);
+      request.onerror = () => reject(request.error);
     });
 
-    if(!data){status("No saved project was found in this browser.",true);return;}
-    if(recording){status("Finish recording before loading a project.",true);return;}
+    db.close();
 
-    await audio();
+    if (!project) {
+      status("No saved project was found in this browser.", true);
+      return;
+    }
+
+    if (recording) stopRecording();
     stopPlayback();
-    tracks=data.map(t=>{
-      const buffer=ctx.createBuffer(t.channels.length,t.channels[0].length,t.sampleRate);
-      t.channels.forEach((ch,i)=>buffer.copyToChannel(ch,i));
-      return {
-        name:t.name,kind:t.kind,start:t.start,volume:t.volume,
-        muted:t.muted,buffer
-      };
-    });
 
-    takeCount=tracks.filter(t=>t.kind==="vocal").length;
-    const beat=tracks.find(t=>t.kind==="beat");
-    $("beatInfo").textContent=beat?beat.name:"No beat in project.";
+    tracks = project.tracks.map(track => ({
+      ...track,
+      data: new Float32Array(track.data)
+    }));
+
+    nextTrackId = Math.max(0, ...tracks.map(t => t.id)) + 1;
+
     renderTracks();
     status("Saved project loaded.");
-  } catch(e) {
-    console.error(e);
-    status("Could not load project: "+(e.message||e),true);
+  } catch (error) {
+    console.error(error);
+    status("Could not load project: " + error.message, true);
   }
 }
 
-$("beatFile").addEventListener("change",e=>{
-  const file=e.target.files?.[0];
-  if(file) importBeat(file);
-  e.target.value="";
+/* Buttons and controls */
+
+$("beatFile").addEventListener("change", event => {
+  const file = event.target.files[0];
+  if (file) importAudio(file);
+  event.target.value = "";
 });
 
-$("micBtn").addEventListener("click",enableMic);
-$("monitorBtn").addEventListener("click",async()=>{
-  try {await audio();setMonitoring(!monitoring);}
-  catch(e){status(e.message||String(e),true);}
+$("micBtn").addEventListener("click", enableMic);
+
+$("playBtn").addEventListener("click", () => {
+  if (playing) pausePlayback();
+  else startPlayback();
 });
 
-$("playBtn").addEventListener("click",async()=>{
-  try {
-    await audio();
-    if(playing) pausePlayback();
-    else startPlayback();
-  } catch(e){status(e.message||String(e),true);}
-});
-
-$("stopBtn").addEventListener("click",()=>{
-  if(recording) finishRecording();
+$("stopBtn").addEventListener("click", () => {
+  if (recording) stopRecording();
   stopPlayback();
-  status("Stopped. Your tracks remain in the session.");
+  status("Playback stopped.");
 });
 
-$("recordBtn").addEventListener("click",()=>{
-  if(recording) finishRecording();
+$("recordBtn").addEventListener("click", () => {
+  if (recording) stopRecording();
   else startRecording();
 });
 
-$("exportBtn").addEventListener("click",exportMix);
-$("saveBtn").addEventListener("click",saveProject);
-$("loadBtn").addEventListener("click",loadProject);
-
-$("masterVolume").addEventListener("input",()=>{
-  const value=Number($("masterVolume").value);
-  $("volumeText").textContent=value+"%";
-  if(masterGain&&ctx) masterGain.gain.setTargetAtTime(value/100,ctx.currentTime,0.02);
+$("monitorBtn").addEventListener("click", () => {
+  setMonitoring(!monitoring);
 });
 
-window.addEventListener("pagehide",()=>{
-  if(micStream) micStream.getTracks().forEach(t=>t.stop());
+$("timeline").addEventListener("input", event => {
+  const newPosition = Number(event.target.value);
+
+  if (playing) {
+    pausePlayback();
+    playOffset = newPosition;
+    startPlayback();
+  } else {
+    playOffset = newPosition;
+    updateTransport();
+  }
 });
 
+$("saveBtn").addEventListener("click", saveProject);
+$("loadBtn").addEventListener("click", loadProject);
+$("exportBtn").addEventListener("click", exportWav);
+
+renderTracks();
 updateTransport();
 </script>
 </body>
